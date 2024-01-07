@@ -1,15 +1,28 @@
+# upstream app {
+#     server localhost:${APP_PORT1};
+#     server localhost:${APP_PORT2};
+# }
 server {
-    listen       80;
-    listen  [::]:80;
+    listen       ${NGINX_PORT};
+    listen  [::]:${NGINX_PORT};
     server_name localhost api.inging.app;
+
     #access_log  /var/log/nginx/host.access.log  main;
 
+    # location / {
+    #     root   /usr/share/nginx/html;
+    #     index  index.html index.htm;
+    # }
+    
     location / {
-        root   /usr/share/nginx/html;
-        index  index.html index.htm;
+        proxy_pass http://app:${APP_PORT}/;
     }
 
-    error_page  404              /404.html;
+    # error_page  404              /404.html;
+
+    # location / {
+    #     proxy_pass http://app/;
+    # }
 
     # redirect server error pages to the static page /50x.html
     
@@ -17,6 +30,7 @@ server {
     # location = /50x.html {
     #     root   /usr/share/nginx/html;
     # }
+
 
     # proxy the PHP scripts to Apache listening on 127.0.0.1:80
     #
